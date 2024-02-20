@@ -3,8 +3,8 @@
 This is a simple arduino clock.  The display is a VFD hooked up
 to serial out.  There is a DS3231 hooked up to the SCL/SDA inputs.
 
-It doesn't auto adjust for DSL, this is just a clock for me, and I'm in AZ,
-we don't use DSL.
+It doesn't auto adjust for DST, this is just a clock for me, and I'm in AZ,
+we don't use DST.
 
 */
 #include <DS3231.h>
