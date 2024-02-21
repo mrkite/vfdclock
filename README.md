@@ -35,3 +35,8 @@ One decreases the hours, the other increases the hours.
 Hitting the set button then starts flashing the minutes and so on.
 Cycle through all the fields until the year.. hitting the set button after
 the year is flashing will exit setting the time.
+
+### Adjusting brightness
+
+Pressing the "+" button while not in set-mode, will cycle through the available
+brightness settings.

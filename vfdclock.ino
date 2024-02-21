@@ -71,22 +71,17 @@ const char *monNames[] = {
   "Dec",
 };
 
+byte brightLevels[] = {
+  0xff, 0x60, 0x40, 0x20
+};
+
+byte brightness = 0;
+
 int changing = 0;
 int flash = 0;
+byte prevMin = 0xff;
 
 void loop() {
-  Serial.write("\x14");  // cursor off
-  Serial.write("\x10\x05");  // move to position 5
-  bool h12, pm;
-  byte hours = rtc.getHour(h12, pm);
-  byte minutes = rtc.getMinute();
-
-  byte dotw = rtc.getDoW();
-  byte day = rtc.getDate();
-  bool century;
-  byte month = rtc.getMonth(century);
-  byte year = rtc.getYear();
-
   if (!digitalRead(SETBTN)) {
     if (setUp) {
       setUp = false;
@@ -114,6 +109,29 @@ void loop() {
     next = false;
     nextUp = true;
   }
+
+  bool h12, pm;
+  byte hours = rtc.getHour(h12, pm);
+  byte minutes = rtc.getMinute();
+  if (minutes == prevMin && !set && !changing && !prev && !next) {
+    delay(1000);  // sleep for a second
+    return;
+  }
+  prevMin = minutes;
+  if (!set && next) {
+    brightness++;
+    brightness &= 3;
+  }
+  
+  Serial.write("\x14");  // cursor off
+  Serial.write("\x10\x05");  // move to position 5
+  Serial.write("\x04");  // brightness
+  Serial.write(brightLevels[brightness]);
+  byte dotw = rtc.getDoW();
+  byte day = rtc.getDate();
+  bool century;
+  byte month = rtc.getMonth(century);
+  byte year = rtc.getYear();
 
   if (set) {
     set = false;
